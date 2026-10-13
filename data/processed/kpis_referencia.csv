@@ -1,0 +1,24 @@
+kpi,valor,calculo_en_looker
+Total de contenidos,31991.0,COUNT_DISTINCT(content_id)
+Total de películas,16000.0,COUNT_DISTINCT(content_id) con tipo = Película
+Total de series,15991.0,COUNT_DISTINCT(content_id) con tipo = Serie
+Países representados,147.0,COUNT_DISTINCT(pais) en catalogo_paises
+Idiomas disponibles,83.0,COUNT_DISTINCT(idioma_codigo)
+Géneros (armonizados),22.0,COUNT_DISTINCT(genero) en catalogo_generos
+Popularidad mediana - películas,10.91,MEDIAN(popularidad)
+Popularidad mediana - series,36.2,MEDIAN(popularidad)
+% con valoración confiable,63.55,COUNT(valoracion_valida)/COUNT(content_id)
+Valoración promedio confiable,6.63,AVG(valoracion_valida)
+Valoración promedio confiable - películas,6.35,AVG(valoracion_valida)
+Valoración promedio confiable - series,7.29,AVG(valoracion_valida)
+Joyas ocultas,5256.0,COUNT con segmento = Joya oculta
+Estrellas,2717.0,COUNT con segmento = Estrella
+Películas con datos financieros,3540.0,COUNT con datos_financieros = Sí
+Cobertura financiera (% películas),22.12,Películas con datos / total películas
+Presupuesto promedio (USD),35582137.65,AVG(presupuesto_usd)
+Ingresos promedio (USD),103777241.0,AVG(ingresos_usd) — solo películas con datos
+Presupuesto total (USD),125960767278.0,SUM(presupuesto_usd)
+Ingresos totales (USD),367371433138.0,SUM(ingresos_usd)
+ROI agregado (ingresos totales / presupuesto total),2.91,SUM(ingresos_usd)/SUM(presupuesto_usd) sobre roi no nulo
+ROI mediano,1.68,MEDIAN(roi)
+% películas que recuperan inversión,63.05,COUNT(roi>=1)/COUNT(roi)

@@ -1,0 +1,12 @@
+tema,hallazgo,decision
+Llave del catálogo,show_id se repite entre películas y series (397 ids),content_id = M-<id> / S-<id>
+Duplicados,9 show_id repetidos en series,Se conserva la fila con más votos
+Géneros,Taxonomías distintas entre fuentes (Action vs Action & Adventure),22 géneros armonizados en español; tabla puente catalogo_generos
+Países,Campo multivaluado (coproducciones),Tabla puente catalogo_paises; cada país cuenta
+Popularidad,"Escalas no comparables (mediana 10,9 películas vs 36,2 series)",popularidad_percentil calculado dentro de cada tipo
+Valoración,vote_average = 0 sin votos; 62% de series con < 10 votos,valoracion_valida solo con >= 10 votos
+Clasificación etaria,rating = vote_average en 100% de los registros,Excluida; KPIs de clasificación no calculables
+Duración,Vacía en películas; constante '1 Seasons' en series,Excluida
+Tendencia temporal,1.000 títulos por año y tipo; date_added = año de estreno,No se informa crecimiento del catálogo; sí tendencias de valoración
+Finanzas,"budget/revenue en 0 (69,7% / 64,7%) y presupuestos de US$1-400",0 = no informado; ROI solo con presupuesto >= US$1 M; alcance 22% de películas
+Segmentos,Se necesita priorizar contenidos,Estrella / Joya oculta / Popular valoración media / Estándar (percentil 75 y valoración 7)
