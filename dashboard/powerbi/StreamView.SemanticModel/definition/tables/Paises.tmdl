@@ -1,0 +1,44 @@
+table Paises
+	lineageTag: 083734e2-2f9d-4787-aa70-64a186ffd63a
+
+	measure 'Contenidos por país' = DISTINCTCOUNT(Paises[content_id])
+		formatString: #,0
+		displayFolder: Catálogo
+		lineageTag: e40fd741-f887-4ef9-aa3d-839654862ef5
+
+	measure 'Países productores' = DISTINCTCOUNT(Paises[pais])
+		formatString: #,0
+		displayFolder: Catálogo
+		lineageTag: 9c314eef-ec71-4fe5-94a8-ae5d1d87f06c
+
+	column content_id
+		dataType: string
+		isHidden
+		lineageTag: 098c2b34-48a3-4ced-9a5a-a0ead22f58cd
+		summarizeBy: none
+		sourceColumn: content_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column pais
+		dataType: string
+		lineageTag: b67f91d5-34d8-4283-8f8f-eaa73918aa0e
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: pais
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Paises = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents(CarpetaDatos & "catalogo_paises.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    Columnas = Table.SelectColumns(Encabezados, {"content_id", "pais"}),
+				    Tipos = Table.TransformColumnTypes(Columnas, {{"content_id", type text}, {"pais", type text}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

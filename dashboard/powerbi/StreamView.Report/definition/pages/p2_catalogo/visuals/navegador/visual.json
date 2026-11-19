@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "navegador",
+  "position": {
+    "x": 24,
+    "y": 8,
+    "z": 2000,
+    "height": 36,
+    "width": 1232,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "pageNavigator",
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Navegación entre las páginas del dashboard'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

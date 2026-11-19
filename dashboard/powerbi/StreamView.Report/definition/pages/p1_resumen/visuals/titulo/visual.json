@@ -1,0 +1,64 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "titulo",
+  "position": {
+    "x": 24,
+    "y": 48,
+    "z": 1000,
+    "height": 76,
+    "width": 780,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Resumen ejecutivo: catálogo StreamView 2010–2025",
+                    "textStyle": {
+                      "fontSize": "18pt",
+                      "color": "#1F2430",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "¿Cómo está el catálogo y dónde están las oportunidades? · Para el Directorio",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#4B5060"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Título de la página y pregunta que responde'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

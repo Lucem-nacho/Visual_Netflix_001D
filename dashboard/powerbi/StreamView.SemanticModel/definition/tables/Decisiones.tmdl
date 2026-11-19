@@ -1,0 +1,51 @@
+table Decisiones
+	lineageTag: 39333571-3525-4bd2-afe8-6490099cb201
+
+	column orden
+		dataType: int64
+		isHidden
+		lineageTag: 534f0837-9763-4844-95b0-e61bd9455b5b
+		summarizeBy: none
+		sourceColumn: orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column tema
+		dataType: string
+		lineageTag: 9d7f1ee5-e23f-4451-a7b7-c992ce125258
+		summarizeBy: none
+		sourceColumn: tema
+		sortByColumn: orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column hallazgo
+		dataType: string
+		lineageTag: bead9d95-3847-4180-b93c-b3b6fa73f9ad
+		summarizeBy: none
+		sourceColumn: hallazgo
+
+		annotation SummarizationSetBy = Automatic
+
+	column decision
+		dataType: string
+		lineageTag: f8a9c107-eb87-4dff-a757-d8cb104e5619
+		summarizeBy: none
+		sourceColumn: decision
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Decisiones = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents(CarpetaDatos & "decisiones_integracion.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    Columnas = Table.SelectColumns(Encabezados, {"orden", "tema", "hallazgo", "decision"}),
+				    VaciosANulos = Table.ReplaceValue(Columnas, "", null, Replacer.ReplaceValue, {"orden"}),
+				    Tipos = Table.TransformColumnTypes(VaciosANulos, {{"orden", Int64.Type}, {"tema", type text}, {"hallazgo", type text}, {"decision", type text}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

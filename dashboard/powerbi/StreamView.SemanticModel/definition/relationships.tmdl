@@ -1,0 +1,8 @@
+relationship 7ea55744-24bb-49b9-abcc-419ba8eea280
+	fromColumn: Generos.content_id
+	toColumn: Catalogo.content_id
+
+relationship c1ef6313-f666-43ec-80ac-f80d30ee9c84
+	fromColumn: Paises.content_id
+	toColumn: Catalogo.content_id
+

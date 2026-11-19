@@ -55,6 +55,11 @@ GENEROS = {
     "Unknown": None,
 }
 
+ORDEN_SEGMENTO = {"Estrella": 1, "Joya oculta": 2, "Popular, valoración media": 3,
+                  "Estándar": 4, "Sin valoración suficiente": 5}
+ORDEN_RANGO = {"< 1 M": 1, "1-10 M": 2, "10-50 M": 3, "50-100 M": 4, "> 100 M": 5}
+IDIOMAS_PRINCIPALES = ["Inglés", "Chino (mandarín)", "Japonés", "Coreano", "Español", "Francés"]
+
 IDIOMAS = {
     "en": "Inglés", "zh": "Chino (mandarín)", "cn": "Chino (cantonés)", "ja": "Japonés",
     "ko": "Coreano", "es": "Español", "fr": "Francés", "de": "Alemán", "hi": "Hindi",
@@ -182,6 +187,12 @@ def integrar(movies: pd.DataFrame, series: pd.DataFrame) -> pd.DataFrame:
         default="Estándar",
     )
 
+    # Columnas de apoyo para el dashboard en Power BI (orden de leyendas y rankings por tipo)
+    out["segmento_orden"] = out["segmento"].map(ORDEN_SEGMENTO)
+    out["idioma_grupo"] = np.where(out["idioma"].isin(IDIOMAS_PRINCIPALES), out["idioma"], "Otros")
+    out["ranking_popularidad_tipo"] = (out.groupby("tipo")["popularidad"]
+                                          .rank(ascending=False, method="first").astype(int))
+
     # Finanzas (solo películas). 0 = dato no informado.
     b = df["budget"].replace(0, np.nan)
     r = df["revenue"].replace(0, np.nan)
@@ -202,6 +213,7 @@ def integrar(movies: pd.DataFrame, series: pd.DataFrame) -> pd.DataFrame:
         labels=["< 1 M", "1-10 M", "10-50 M", "50-100 M", "> 100 M"], right=False,
     ).astype(str).replace("nan", None)
 
+    out["rango_orden"] = out["rango_presupuesto"].map(ORDEN_RANGO)
     out["descripcion"] = df["description"]
     return out, gl, pl
 
@@ -269,7 +281,8 @@ def main():
     pai.to_csv(OUT / "catalogo_paises.csv", index=False)
     kpis(cat, gen, pai).to_csv(OUT / "kpis_referencia.csv", index=False)
     calidad(movies, series).to_csv(OUT / "calidad_datos.csv", index=False)
-    pd.DataFrame(DECISIONES, columns=["tema", "hallazgo", "decision"]).to_csv(
+    pd.DataFrame(DECISIONES, columns=["tema", "hallazgo", "decision"]).assign(
+        orden=lambda d: range(1, len(d) + 1)).to_csv(
         OUT / "decisiones_integracion.csv", index=False)
     print(f"catalogo_unificado: {len(cat):,} filas | generos: {len(gen):,} | paises: {len(pai):,}")
 

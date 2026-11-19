@@ -1,0 +1,160 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "t_hallazgos",
+  "position": {
+    "x": 24,
+    "y": 508,
+    "z": 13000,
+    "height": 196,
+    "width": 600,
+    "tabOrder": 13000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Hallazgos",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#1F2430",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "1. 2 de cada 3 títulos bien valorados (5.256 de 7.973) están fuera del 25% más popular de su tipo.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#1F2430"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "2. Las joyas se valoran casi igual que las estrellas (7,55 vs 7,66), con la mitad de popularidad (percentil 43 vs 89).",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#1F2430"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "3. El 62% de las series no tiene votos suficientes: puede haber más joyas sin detectar.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#1F2430"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Recomendamos: campaña con las 2.636 joyas con 100+ votos, anime y k-drama en las recomendaciones y más valoraciones de series.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#6250D6",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Hallazgos principales y recomendaciones'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#DCDAD3'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

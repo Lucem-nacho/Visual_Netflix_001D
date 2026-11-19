@@ -1,0 +1,381 @@
+table Catalogo
+	lineageTag: f6b55942-3297-4669-8e5a-1c340b24c680
+
+	/// Contenidos únicos (una fila por content_id)
+	measure Contenidos = COUNTROWS(Catalogo)
+		formatString: #,0
+		displayFolder: Catálogo
+		lineageTag: 44b4774a-88db-4b12-81c5-9e4e8e6bc16c
+
+	measure 'Películas' = CALCULATE(COUNTROWS(Catalogo), Catalogo[tipo] = "Película")
+		formatString: #,0
+		displayFolder: Catálogo
+		lineageTag: 1d9fb2f3-1bc2-4c7c-9866-052d6742e95a
+
+	measure Series = CALCULATE(COUNTROWS(Catalogo), Catalogo[tipo] = "Serie")
+		formatString: #,0
+		displayFolder: Catálogo
+		lineageTag: 1f5f9883-518e-4d54-8633-3c153ba604c3
+
+	measure Idiomas = DISTINCTCOUNT(Catalogo[idioma_codigo])
+		formatString: #,0
+		displayFolder: Catálogo
+		lineageTag: 369ee839-54b7-4d62-99bb-7737ea41593d
+
+	/// Participación de cada grupo de idioma dentro de su tipo de contenido
+	measure '% del tipo' = DIVIDE([Contenidos], CALCULATE([Contenidos], REMOVEFILTERS(Catalogo[idioma_grupo])))
+		formatString: 0.0%
+		displayFolder: Catálogo
+		lineageTag: aa5347d4-9449-46e0-8888-d42b669dfd18
+
+	/// Promedio de vote_average solo para contenidos con al menos 10 votos
+	measure 'Valoración promedio' = AVERAGE(Catalogo[valoracion_valida])
+		formatString: 0.00
+		displayFolder: Valoración
+		lineageTag: 362feb29-23e2-4ee7-a9e2-89357ac40263
+
+	measure 'Contenidos con valoración confiable' = CALCULATE(COUNTROWS(Catalogo), Catalogo[valoracion_confiable] = "Sí")
+		formatString: #,0
+		displayFolder: Valoración
+		lineageTag: dd8845cb-a30e-4c3f-8790-70ac50499bf8
+
+	measure '% valoración confiable' = DIVIDE([Contenidos con valoración confiable], [Contenidos])
+		formatString: 0.0%
+		displayFolder: Valoración
+		lineageTag: 18bec458-4684-48d3-b85f-4dc5735928ef
+
+	measure Estrellas = CALCULATE(COUNTROWS(Catalogo), Catalogo[segmento] = "Estrella")
+		formatString: #,0
+		displayFolder: Segmentos
+		lineageTag: 58c1587e-df5e-42fc-ad47-2ba8624694d9
+
+	measure 'Joyas ocultas' = CALCULATE(COUNTROWS(Catalogo), Catalogo[segmento] = "Joya oculta")
+		formatString: #,0
+		displayFolder: Segmentos
+		lineageTag: 1823056a-509e-4c69-97f0-a97f0527147c
+
+	measure 'Joyas con 100+ votos' = CALCULATE(COUNTROWS(Catalogo), Catalogo[segmento] = "Joya oculta", Catalogo[votos] >= 100)
+		formatString: #,0
+		displayFolder: Segmentos
+		lineageTag: f758f6b7-1a26-4354-bd16-b776505621e1
+
+	measure '% joyas ocultas' = DIVIDE([Joyas ocultas], [Contenidos])
+		formatString: 0.0%
+		displayFolder: Segmentos
+		lineageTag: 09ecdac9-cd41-410d-92e9-658a193a1dd3
+
+	measure 'Joyas sobre bien valorados' = DIVIDE([Joyas ocultas], [Joyas ocultas] + [Estrellas])
+		formatString: 0.0%
+		displayFolder: Segmentos
+		lineageTag: f1d82954-78ce-410f-881a-1b548cc70219
+
+	measure 'Percentil de popularidad' = AVERAGE(Catalogo[popularidad_percentil])
+		formatString: 0.0
+		displayFolder: Popularidad
+		lineageTag: f5646dcb-3746-431c-b9d0-a9ff81e0dd12
+
+	measure 'Percentil de popularidad mediano' = MEDIAN(Catalogo[popularidad_percentil])
+		formatString: 0.0
+		displayFolder: Popularidad
+		lineageTag: e9c4cfeb-36e7-445c-89dc-fff02eea0a89
+
+	measure 'Películas con datos financieros' = CALCULATE(COUNTROWS(Catalogo), Catalogo[datos_financieros] = "Sí")
+		formatString: #,0
+		displayFolder: Finanzas
+		lineageTag: 678480ad-eea4-4600-84eb-52ac61b5c8b5
+
+	measure 'Cobertura financiera' = DIVIDE([Películas con datos financieros], [Películas])
+		formatString: 0.0%
+		displayFolder: Finanzas
+		lineageTag: 4a913cbe-5808-43f3-93bd-b58fb56717e0
+
+	measure 'Presupuesto promedio (US$ M)' = DIVIDE(CALCULATE(AVERAGE(Catalogo[presupuesto_usd]), Catalogo[datos_financieros] = "Sí"), 1000000)
+		formatString: 0.0
+		displayFolder: Finanzas
+		lineageTag: abfecfc4-4759-43c8-a165-062c66b94b84
+
+	measure 'Ingresos promedio (US$ M)' = DIVIDE(CALCULATE(AVERAGE(Catalogo[ingresos_usd]), Catalogo[datos_financieros] = "Sí"), 1000000)
+		formatString: 0.0
+		displayFolder: Finanzas
+		lineageTag: 2c643e17-55db-40b2-a8ee-36e16d8e52ec
+
+	/// Presupuesto en millones, solo películas con ROI calculable e ingresos de al menos US$10 mil
+	measure 'Presupuesto (US$ M)' = DIVIDE(CALCULATE(AVERAGE(Catalogo[presupuesto_usd]), Catalogo[presupuesto_usd] >= 1000000, Catalogo[ingresos_usd] >= 10000), 1000000)
+		formatString: #,0.###
+		displayFolder: Finanzas
+		lineageTag: a66b174b-f92f-4a09-9a42-f2728e74e955
+
+	measure 'Ingresos (US$ M)' = DIVIDE(CALCULATE(AVERAGE(Catalogo[ingresos_usd]), Catalogo[presupuesto_usd] >= 1000000, Catalogo[ingresos_usd] >= 10000), 1000000)
+		formatString: #,0.###
+		displayFolder: Finanzas
+		lineageTag: bc4e1bab-dca3-447e-b06b-f131e7cc714b
+
+	/// Mediana de ingresos / presupuesto, presupuesto >= US$1 M
+	measure 'ROI mediano' = MEDIAN(Catalogo[roi])
+		formatString: 0.00
+		displayFolder: Finanzas
+		lineageTag: 5200a84a-2592-43e8-9b09-bdf8b3e632d0
+
+	measure 'Películas con ROI' = CALCULATE(COUNTROWS(Catalogo), NOT ISBLANK(Catalogo[roi]))
+		formatString: #,0
+		displayFolder: Finanzas
+		lineageTag: c148d3a8-eaeb-4617-8fa1-87617fa07628
+
+	measure '% recupera inversión' = DIVIDE(CALCULATE(COUNTROWS(Catalogo), Catalogo[roi] >= 1), [Películas con ROI])
+		formatString: 0.0%
+		displayFolder: Finanzas
+		lineageTag: c5b41499-afe4-47b3-8f43-d7e1c6444377
+
+	column content_id
+		dataType: string
+		lineageTag: 8c6123a0-e0eb-48cb-9eb2-519aa505b12a
+		summarizeBy: none
+		sourceColumn: content_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column tipo
+		dataType: string
+		lineageTag: 2b83c419-4ab3-41f9-bab1-1cf7f3a7377a
+		summarizeBy: none
+		sourceColumn: tipo
+
+		annotation SummarizationSetBy = Automatic
+
+	column titulo
+		dataType: string
+		lineageTag: 0f2d70f2-3129-4512-a337-a56759ba8363
+		summarizeBy: none
+		sourceColumn: titulo
+
+		annotation SummarizationSetBy = Automatic
+
+	column anio_estreno
+		dataType: int64
+		formatString: 0
+		lineageTag: f9dc45e6-8ff4-48be-98ac-101a70510d08
+		summarizeBy: none
+		sourceColumn: anio_estreno
+
+		annotation SummarizationSetBy = Automatic
+
+	column periodo
+		dataType: string
+		lineageTag: 7c4759f6-5abe-4db5-9659-f6b35ab99e62
+		summarizeBy: none
+		sourceColumn: periodo
+
+		annotation SummarizationSetBy = Automatic
+
+	column genero_principal
+		dataType: string
+		lineageTag: eaa8ca79-b4d7-403c-ae69-33dae8cc3f51
+		summarizeBy: none
+		sourceColumn: genero_principal
+
+		annotation SummarizationSetBy = Automatic
+
+	column generos
+		dataType: string
+		lineageTag: ac4107b2-8b95-4d5f-ad2b-350d7e32f5ff
+		summarizeBy: none
+		sourceColumn: generos
+
+		annotation SummarizationSetBy = Automatic
+
+	column pais_principal
+		dataType: string
+		dataCategory: Country
+		lineageTag: 939a4d41-fd92-4ee4-95f4-93fe0c58bc74
+		summarizeBy: none
+		sourceColumn: pais_principal
+
+		annotation SummarizationSetBy = Automatic
+
+	column coproduccion
+		dataType: string
+		lineageTag: eddd18a7-c468-4c30-9727-72012e11cce8
+		summarizeBy: none
+		sourceColumn: coproduccion
+
+		annotation SummarizationSetBy = Automatic
+
+	column idioma
+		dataType: string
+		lineageTag: e1cb6e55-e7fe-40c6-98b6-de26402aa926
+		summarizeBy: none
+		sourceColumn: idioma
+
+		annotation SummarizationSetBy = Automatic
+
+	column idioma_codigo
+		dataType: string
+		lineageTag: bf8bdf4e-5c9d-4031-8e1a-c74f5d387e3d
+		summarizeBy: none
+		sourceColumn: idioma_codigo
+
+		annotation SummarizationSetBy = Automatic
+
+	column idioma_grupo
+		dataType: string
+		lineageTag: 4b7831b7-0e7a-4847-a6fc-08d5c9e266e2
+		summarizeBy: none
+		sourceColumn: idioma_grupo
+
+		annotation SummarizationSetBy = Automatic
+
+	column director
+		dataType: string
+		lineageTag: 916d0397-42e2-4d39-95fc-54eadc1ec19f
+		summarizeBy: none
+		sourceColumn: director
+
+		annotation SummarizationSetBy = Automatic
+
+	column popularidad
+		dataType: double
+		formatString: 0.00
+		lineageTag: 12843ed2-458f-46ed-8d16-2495530368f0
+		summarizeBy: none
+		sourceColumn: popularidad
+
+		annotation SummarizationSetBy = Automatic
+
+	column popularidad_percentil
+		dataType: double
+		formatString: 0.0
+		lineageTag: c80eac42-09be-4f77-9225-76d5c1e8a5f5
+		summarizeBy: none
+		sourceColumn: popularidad_percentil
+
+		annotation SummarizationSetBy = Automatic
+
+	column votos
+		dataType: int64
+		formatString: #,0
+		lineageTag: 42488df1-14a1-4e97-9cd0-73d8b2ac1726
+		summarizeBy: none
+		sourceColumn: votos
+
+		annotation SummarizationSetBy = Automatic
+
+	column valoracion_confiable
+		dataType: string
+		lineageTag: 8bf3f8d1-e9a7-482e-b4b2-ed5227758d0c
+		summarizeBy: none
+		sourceColumn: valoracion_confiable
+
+		annotation SummarizationSetBy = Automatic
+
+	column valoracion_valida
+		dataType: double
+		formatString: 0.00
+		lineageTag: 8f051548-b62e-490d-81de-a912e6bc4955
+		summarizeBy: none
+		sourceColumn: valoracion_valida
+
+		annotation SummarizationSetBy = Automatic
+
+	column segmento
+		dataType: string
+		lineageTag: 659cc7c2-76bd-4621-b5a9-818358219171
+		summarizeBy: none
+		sourceColumn: segmento
+		sortByColumn: segmento_orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column segmento_orden
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 6b08a803-2bd5-4bcc-93d0-814a9b9b5633
+		summarizeBy: none
+		sourceColumn: segmento_orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ranking_popularidad_tipo
+		dataType: int64
+		formatString: 0
+		lineageTag: 8489301b-ee4f-4097-b623-9e55ee1a6a2f
+		summarizeBy: none
+		sourceColumn: ranking_popularidad_tipo
+
+		annotation SummarizationSetBy = Automatic
+
+	column presupuesto_usd
+		dataType: double
+		formatString: #,0
+		lineageTag: 52b92af5-b442-4131-9cc7-6e0ff4efe041
+		summarizeBy: none
+		sourceColumn: presupuesto_usd
+
+		annotation SummarizationSetBy = Automatic
+
+	column ingresos_usd
+		dataType: double
+		formatString: #,0
+		lineageTag: 4a7705d5-dc10-4960-a34a-fa418b469f58
+		summarizeBy: none
+		sourceColumn: ingresos_usd
+
+		annotation SummarizationSetBy = Automatic
+
+	column datos_financieros
+		dataType: string
+		lineageTag: 7b7e0b5e-0e08-4d6f-9473-c97f6b76122d
+		summarizeBy: none
+		sourceColumn: datos_financieros
+
+		annotation SummarizationSetBy = Automatic
+
+	column roi
+		dataType: double
+		formatString: 0.00
+		lineageTag: 93e9e4ea-73ce-4f8a-824c-b4a2af81b8c6
+		summarizeBy: none
+		sourceColumn: roi
+
+		annotation SummarizationSetBy = Automatic
+
+	column resultado_financiero
+		dataType: string
+		lineageTag: 0ae2af99-f696-4889-8424-6e85e35fdc9d
+		summarizeBy: none
+		sourceColumn: resultado_financiero
+
+		annotation SummarizationSetBy = Automatic
+
+	column rango_presupuesto
+		dataType: string
+		lineageTag: 32559ce1-4ac8-4e16-ac10-565a78889f6f
+		summarizeBy: none
+		sourceColumn: rango_presupuesto
+		sortByColumn: rango_orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column rango_orden
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: ed43f71b-a479-4ea9-95eb-9d5cba9a13f1
+		summarizeBy: none
+		sourceColumn: rango_orden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Catalogo = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents(CarpetaDatos & "catalogo_unificado.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    Columnas = Table.SelectColumns(Encabezados, {"content_id", "tipo", "titulo", "anio_estreno", "periodo", "genero_principal", "generos", "pais_principal", "coproduccion", "idioma", "idioma_codigo", "idioma_grupo", "director", "popularidad", "popularidad_percentil", "votos", "valoracion_confiable", "valoracion_valida", "segmento", "segmento_orden", "ranking_popularidad_tipo", "presupuesto_usd", "ingresos_usd", "datos_financieros", "roi", "resultado_financiero", "rango_presupuesto", "rango_orden"}),
+				    VaciosANulos = Table.ReplaceValue(Columnas, "", null, Replacer.ReplaceValue, {"anio_estreno", "popularidad", "popularidad_percentil", "votos", "valoracion_valida", "segmento_orden", "ranking_popularidad_tipo", "presupuesto_usd", "ingresos_usd", "roi", "rango_orden"}),
+				    Tipos = Table.TransformColumnTypes(VaciosANulos, {{"content_id", type text}, {"tipo", type text}, {"titulo", type text}, {"anio_estreno", Int64.Type}, {"periodo", type text}, {"genero_principal", type text}, {"generos", type text}, {"pais_principal", type text}, {"coproduccion", type text}, {"idioma", type text}, {"idioma_codigo", type text}, {"idioma_grupo", type text}, {"director", type text}, {"popularidad", type number}, {"popularidad_percentil", type number}, {"votos", Int64.Type}, {"valoracion_confiable", type text}, {"valoracion_valida", type number}, {"segmento", type text}, {"segmento_orden", Int64.Type}, {"ranking_popularidad_tipo", Int64.Type}, {"presupuesto_usd", type number}, {"ingresos_usd", type number}, {"datos_financieros", type text}, {"roi", type number}, {"resultado_financiero", type text}, {"rango_presupuesto", type text}, {"rango_orden", Int64.Type}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

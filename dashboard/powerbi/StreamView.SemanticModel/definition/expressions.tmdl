@@ -1,0 +1,5 @@
+expression CarpetaDatos = "C:\Users\Usuario\Desktop\Visual\Visual_Netflix_001D\data\processed\" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: 9f225dfa-12a2-4d74-a497-f76da05746ca
+
+	annotation PBI_ResultType = Text
+

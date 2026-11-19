@@ -1,0 +1,65 @@
+table CalidadDatos
+	lineageTag: 093d9aff-32b9-4f06-b2ae-403371eefd4f
+
+	measure '% de valores faltantes' = DIVIDE(SUM(CalidadDatos[pct_nulos]), 100)
+		formatString: 0%
+		displayFolder: Calidad
+		lineageTag: 25d1c8b8-e42f-4f8a-8436-1d3d13fe5155
+
+	column fuente
+		dataType: string
+		lineageTag: ab80b200-f054-486a-88c3-202b883c580b
+		summarizeBy: none
+		sourceColumn: fuente
+
+		annotation SummarizationSetBy = Automatic
+
+	column variable
+		dataType: string
+		lineageTag: 8c560d41-2f3e-4cfe-b1ec-acdebf8e8f49
+		summarizeBy: none
+		sourceColumn: variable
+
+		annotation SummarizationSetBy = Automatic
+
+	column registros
+		dataType: int64
+		formatString: #,0
+		lineageTag: 9e20414e-898c-4709-9a03-57e65c3f2e6f
+		summarizeBy: none
+		sourceColumn: registros
+
+		annotation SummarizationSetBy = Automatic
+
+	column nulos
+		dataType: int64
+		formatString: #,0
+		lineageTag: bf7e6971-cbb1-475b-924c-979a0a3472aa
+		summarizeBy: none
+		sourceColumn: nulos
+
+		annotation SummarizationSetBy = Automatic
+
+	column pct_nulos
+		dataType: double
+		formatString: 0.0
+		lineageTag: 2fc4ab8e-1f5b-4aa0-b74b-e905a393a025
+		summarizeBy: none
+		sourceColumn: pct_nulos
+
+		annotation SummarizationSetBy = Automatic
+
+	partition CalidadDatos = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents(CarpetaDatos & "calidad_datos.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    Columnas = Table.SelectColumns(Encabezados, {"fuente", "variable", "registros", "nulos", "pct_nulos"}),
+				    VaciosANulos = Table.ReplaceValue(Columnas, "", null, Replacer.ReplaceValue, {"registros", "nulos", "pct_nulos"}),
+				    Tipos = Table.TransformColumnTypes(VaciosANulos, {{"fuente", type text}, {"variable", type text}, {"registros", Int64.Type}, {"nulos", Int64.Type}, {"pct_nulos", type number}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

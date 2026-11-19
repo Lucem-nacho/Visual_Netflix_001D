@@ -1,0 +1,210 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "t_stats",
+  "position": {
+    "x": 24,
+    "y": 132,
+    "z": 3000,
+    "height": 56,
+    "width": 1232,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "2",
+                    "textStyle": {
+                      "fontSize": "15pt",
+                      "color": "#1F2430",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " fuentes integradas",
+                    "textStyle": {
+                      "fontSize": "12pt",
+                      "color": "#4B5060"
+                    }
+                  },
+                  {
+                    "value": "   ·   ",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#4B5060"
+                    }
+                  },
+                  {
+                    "value": "32.000",
+                    "textStyle": {
+                      "fontSize": "15pt",
+                      "color": "#1F2430",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " registros originales",
+                    "textStyle": {
+                      "fontSize": "12pt",
+                      "color": "#4B5060"
+                    }
+                  },
+                  {
+                    "value": "   ·   ",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#4B5060"
+                    }
+                  },
+                  {
+                    "value": "9",
+                    "textStyle": {
+                      "fontSize": "15pt",
+                      "color": "#1F2430",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " duplicados eliminados",
+                    "textStyle": {
+                      "fontSize": "12pt",
+                      "color": "#4B5060"
+                    }
+                  },
+                  {
+                    "value": "   ·   ",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#4B5060"
+                    }
+                  },
+                  {
+                    "value": "397",
+                    "textStyle": {
+                      "fontSize": "15pt",
+                      "color": "#1F2430",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " IDs repetidos entre fuentes",
+                    "textStyle": {
+                      "fontSize": "12pt",
+                      "color": "#4B5060"
+                    }
+                  },
+                  {
+                    "value": "   ·   ",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#4B5060"
+                    }
+                  },
+                  {
+                    "value": "31.991",
+                    "textStyle": {
+                      "fontSize": "15pt",
+                      "color": "#1F2430",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": " contenidos únicos",
+                    "textStyle": {
+                      "fontSize": "12pt",
+                      "color": "#4B5060"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Resumen de la integración: 2 fuentes, 32.000 registros, 9 duplicados, 397 IDs repetidos, 31.991 contenidos únicos'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#DCDAD3'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

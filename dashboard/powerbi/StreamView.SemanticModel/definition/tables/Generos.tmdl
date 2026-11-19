@@ -1,0 +1,59 @@
+table Generos
+	lineageTag: 668e5e22-153f-4435-9870-66e060af8e8a
+
+	measure 'Contenidos por género' = DISTINCTCOUNT(Generos[content_id])
+		formatString: #,0
+		displayFolder: Catálogo
+		lineageTag: 4c1239fe-f8fa-4e78-98eb-4f3ae9fab642
+
+	measure 'Géneros armonizados' = DISTINCTCOUNT(Generos[genero])
+		formatString: #,0
+		displayFolder: Catálogo
+		lineageTag: ce0dfc3a-2e92-481d-a34e-b560a5a0ecba
+
+	/// Percentil de popularidad mediano (dentro de su tipo) de los contenidos del género
+	measure 'Popularidad mediana del género' = MEDIAN(Generos[popularidad_percentil])
+		formatString: 0.0
+		displayFolder: Popularidad
+		lineageTag: af1eb8d8-9a58-45b6-b744-391813e1b684
+
+	column content_id
+		dataType: string
+		isHidden
+		lineageTag: c32e84f5-b890-47b4-a86b-82d37a1d0eb1
+		summarizeBy: none
+		sourceColumn: content_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column genero
+		dataType: string
+		lineageTag: 6e850583-799b-4d8f-8942-96f346c8b674
+		summarizeBy: none
+		sourceColumn: genero
+
+		annotation SummarizationSetBy = Automatic
+
+	column popularidad_percentil
+		dataType: double
+		formatString: 0.0
+		lineageTag: 8c4ff9e8-b65c-4fd9-ac25-9bb31de2b13c
+		summarizeBy: none
+		sourceColumn: popularidad_percentil
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Generos = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents(CarpetaDatos & "catalogo_generos.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    Columnas = Table.SelectColumns(Encabezados, {"content_id", "genero", "popularidad_percentil"}),
+				    VaciosANulos = Table.ReplaceValue(Columnas, "", null, Replacer.ReplaceValue, {"popularidad_percentil"}),
+				    Tipos = Table.TransformColumnTypes(VaciosANulos, {{"content_id", type text}, {"genero", type text}, {"popularidad_percentil", type number}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,22 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-CL
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["CarpetaDatos", "Catalogo", "Generos", "Paises", "CalidadDatos", "Decisiones"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Catalogo
+ref table Generos
+ref table Paises
+ref table CalidadDatos
+ref table Decisiones
+
+ref cultureInfo es-ES
+
